@@ -1,6 +1,6 @@
 const multer = require('multer');
 
-const errorHandler = (error, req, res, next) => {
+module.exports.ErrorHandler = (error, req, res, next) => {
 
     if (error.code === '23505') {
         const constraintName = error.constraint;
@@ -18,5 +18,3 @@ const errorHandler = (error, req, res, next) => {
         return res.status(500).json({ msg: 'Internal server error' });
     }
 };
-
-module.exports = errorHandler;

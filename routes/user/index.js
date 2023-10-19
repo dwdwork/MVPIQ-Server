@@ -30,8 +30,11 @@ const { deleteAccountValidator, followerFollowingValidator, updateDataValidator 
 const { profilePhotoUpload } = require('../../modules/handlePhotoUpload/profilePhotoUpload');
 
 const router = Router();
-
+router.get('/', (req, res) => {
+    res.send('at /user: ok');
+});
 router.get('/get-user', getUser);
+
 // router.get('/get-guest', getGuest);
 // router.get('/get-follows', getFollows);
 router.get('/token-valid', (req, res, next) => {

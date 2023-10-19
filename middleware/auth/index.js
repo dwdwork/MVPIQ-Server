@@ -1,29 +1,40 @@
-const { envSECRET } = require('../../config');
+const { envSECRET } = require('../../config/scrtConfig');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const express = require('express');
 
-module.exports.createHasedPassword = function (password) {
-    return bcrypt.hash(password, 5);
+module.exports.createHashedPassword = async function (password) {
+    try {
+        const hash = await bcrypt.hash(password, 5);
+        console.log('created hash password: ', hash);
+        return hash;
+    } catch (error) {
+        console.error('Error creating hashed password:', error);
+        throw error; // Handle the error as needed
+    }
 };
 
-module.exports.compareHashedPassword = function (password, hashPassword) {
-    return bcrypt.compare(password, hashPassword);
+module.exports.compareHashedPassword = async function (password, hashPassword) {
+    try {
+        const match = await bcrypt.compare(password, hashPassword);
+        return match;
+    } catch (error) {
+        // Handle any errors, e.g., log them or throw an error
+        throw error;
+    }
 }
     
 module.exports.createJWT = function (user) {
-    if (user) {
-        const token = jwt.sign(
-            {
-                email: user.username,
-                id: user.id,
-                verified: user.verified
-            },
-            envSECRET,
-        );
-    
-        return token;
-    }
+    const token = jwt.sign(
+        {
+            email: user.username,
+            id: user.id,
+            verified: user.verified
+        },
+        envSECRET,
+    );
+
+    return token;
 };
       
 module.exports.createEmailJWT = function (email) {

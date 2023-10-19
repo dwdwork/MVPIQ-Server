@@ -16,10 +16,11 @@ const bodyParser = require('body-parser');
 const globalRouter = require('./routes/global');
 const authRouter = require('./routes/auth');
 const services = require('./routes/services');
-// const { errorHandler } = require('./controller/errorHandler');
+const { ErrorHandler } = require('./controller/error/ErrorHandler');
 const user = require('./routes/user');
-const envSECRET = require('./config');
+const { envSECRET } = require('./config/scrtConfig');
 const { blockJWT, protect } = require('./middleware/auth');
+const { apiLimiter, authRateLimiter } = require('./middleware/validation/rateLimiter') ;
 
 // Old
 // const apiRoutes = require('./routes/api');
@@ -49,15 +50,16 @@ var accessLogStream = fs.createWriteStream(path.join("./", "access.log"), {
 // Loggers
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(apiLimiter);
 // Old Routes
 // app.use('/api', apiRoutes);
 
 // Routes
 app.use("/api", globalRouter);
-app.use("/api/auth", authRouter);
+app.use("/api/auth", authRateLimiter, authRouter);
 // app.use("/api/services", blockJWT, protect, services);
 app.use("/api/user", blockJWT, protect, user);
+app.use(ErrorHandler);
 
 const port = 3000;
 app.listen(port, () => {
