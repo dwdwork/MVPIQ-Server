@@ -1,6 +1,6 @@
-const pool = require('../../lib/sql/init');
-const envSECRET = require('../../config/scrtConfig');
-const { compareHashedPassword, createJWT } = require('../../middleware/auth');
+const pool = require("../../lib/sql/init");
+const envSECRET = require("../../config/scrtConfig");
+const { compareHashedPassword, createJWT } = require("../../middleware/auth");
 
 module.exports.loginUser = async function (req, res, next) {
     const { username, password } = req.body;
@@ -8,7 +8,7 @@ module.exports.loginUser = async function (req, res, next) {
 
     // Query to fetch user with the provided username
     const loginQuery = {
-        text: 'SELECT * FROM users WHERE username = $1',
+        text: "SELECT * FROM users WHERE username = $1",
         values: [formattedUserName],
     };
 
@@ -16,28 +16,45 @@ module.exports.loginUser = async function (req, res, next) {
         const { rows } = await pool.query(loginQuery);
         if (rows.length != 0) {
             const user = rows[0];
-            console.log('User found: ', user);
 
             if (await compareHashedPassword(password, user.password)) {
                 const token = createJWT({
                     username,
                     id: user.id,
-                    verified: user.emailIsVerified,
+                    verified: true,
                 }, envSECRET);
                 if (token) {
                     req.session.token = token;
+
+                    // Set the session token in a cookie
+                    res.cookie("sessionToken", token, {
+                        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: "Lax",
+                    });
+
+                    // Set the session token in a cookie
+                    res.cookie("loggedIn", "true");
+
+                    console.log("Session(After login): ", req.session);
+                    console.log("Cookies(After login): ", req.cookies);
+                    console.log("User found: ", user);
+                    
                     return res.status(200).json({
                         token,
                         data: {
                             email: user.email,
                             username,
                             imageUri: user.imageUri,
-                            emailIsVerified: user.emailIsVerified,
+                            emailIsVerified: true,
                             name: user.name,
                             id: user.id,
-                            verified: user.verified,
+                            verified: token.verified,
                         },
                         msg: "login success",
+                        cookies: req.cookies,
+                        signedCookies: req.signedCookies
                     });
                 }
             } else {
@@ -45,7 +62,7 @@ module.exports.loginUser = async function (req, res, next) {
             }
             
         } else {
-            console.log('No Users found.');
+            console.log("No Users found.");
             return res.status(401).json({ msg: "User Name or Password is incorrect" });
         }
     } catch (e) {

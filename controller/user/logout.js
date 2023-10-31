@@ -1,9 +1,7 @@
-const logout = (req, res) => {
-    // Destroy the session
+module.exports.logout = (req, res) => {
+    res.clearCookie("loggedin", null);
+    res.clearCookie("sessionToken", null);
     req.session.destroy();
-    res.json({ msg: 'done' });
+    res.json({ msg: "done" });
+    res.end();
 };
-
-module.exports = {
-    logout,
-}

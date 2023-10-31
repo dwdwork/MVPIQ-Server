@@ -1,61 +1,6 @@
-const pool = require('../../lib/sql/init');
+const pool = require("../../lib/sql/init");
 
-// async function getUser (req, res) {
-//     const { id } = req.user;
-
-//     try {
-//         // Query to get user data
-//         const getUserQuery = {
-//             text: `
-//                 SELECT email, 
-//                 username, 
-//                 imageUri, 
-//                 emailIsVerified, 
-//                 verified, 
-//                 name, 
-//                 id, 
-//                 followersCount, 
-//                 followingCount 
-//                 FROM users WHERE id = $1`,
-//             values: [id],
-//         };
-
-//         const userResult = await pool.query(getUserQuery);
-//         const user = userResult.rows[0];
-
-//         if (user) {
-//             const {
-//                 email,
-//                 username,
-//                 imageUri,
-//                 emailIsVerified,
-//                 name,
-//                 id,
-//                 verified,
-//                 followersCount,
-//                 followingCount,
-//             } = user;
-
-//             return res.status(200).send({
-//                 data: {
-//                     email,
-//                     username,
-//                     imageUri,
-//                     emailIsVerified,
-//                     verified,
-//                     name,
-//                     id,
-//                 },
-//             });
-//         }
-
-//         res.status(404).json({ msg: 'User does not exist' });
-//     } catch (e) {
-//         next(e);
-//     }
-// };
-
-module.exports.getUser = async function(req, res) {
+module.exports.getUser = async function(req, res, next) {
     const { id } = req.user;
 
     try {
@@ -63,15 +8,12 @@ module.exports.getUser = async function(req, res) {
         const getUserQuery = {
             text: `
                 SELECT email, 
-                username, 
-                imageUri, 
-                emailIsVerified, 
-                verified, 
-                name, 
-                id, 
-                followersCount, 
-                followingCount 
-                FROM users WHERE id = $1`,
+                    username, 
+                    emailIsVerified, 
+                    verified, 
+                    id
+                FROM users
+                WHERE id = $1`,
             values: [id],
         };
 
@@ -82,30 +24,29 @@ module.exports.getUser = async function(req, res) {
             const {
                 email,
                 username,
-                imageUri,
                 emailIsVerified,
                 name,
                 id,
                 verified,
-                followersCount,
-                followingCount,
             } = user;
 
             return res.status(200).send({
                 data: {
                     email,
                     username,
-                    imageUri,
                     emailIsVerified,
                     verified,
                     name,
                     id,
                 },
+                cookies: req.cookies
             });
         }
 
-        res.status(404).json({ msg: 'User does not exist' });
-    } catch (e) {
-        next(e);
+        res.status(404).json({ msg: "User does not exist" });
+    } catch (error) {
+        console.error(error);
+        res.status(401).json({ error: "getUser failed" });
+        next();
     }
-}; // Export the function directly
+};

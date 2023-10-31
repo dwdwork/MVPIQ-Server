@@ -19,7 +19,6 @@ const { Router } = express;
  *  logout, 
  *  deleteAccount } = require('../../controller/user');
  */
-// const { getUser } = require('../../controller/user/getUser');
 const { getUser } = require('../../controller/user/getUser');
 const { updatePhoto } = require('../../controller/user/updatePhoto');
 const { changeData } = require('../../controller/user/changeData');
@@ -30,8 +29,10 @@ const { deleteAccountValidator, followerFollowingValidator, updateDataValidator 
 const { profilePhotoUpload } = require('../../modules/handlePhotoUpload/profilePhotoUpload');
 
 const router = Router();
+
+// Verify current route
 router.get('/', (req, res) => {
-    res.send('at /user: ok');
+    res.send('ok');
 });
 router.get('/get-user', getUser);
 

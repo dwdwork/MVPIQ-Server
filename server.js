@@ -11,19 +11,19 @@ const path = require("path");
 const session = require('express-session');
 const http = require('http');
 const bodyParser = require('body-parser');
+const cookie = require('cookie');
+const cookieParser = require('cookie-parser');
 
 // Get files
-const globalRouter = require('./routes/global');
-const authRouter = require('./routes/auth');
-const services = require('./routes/services');
-const { ErrorHandler } = require('./controller/error/ErrorHandler');
-const user = require('./routes/user');
 const { envSECRET } = require('./config/scrtConfig');
-const { blockJWT, protect } = require('./middleware/auth');
+const globalRouter = require('./routes/global');
 const { apiLimiter, authRateLimiter } = require('./middleware/validation/rateLimiter') ;
-
-// Old
-// const apiRoutes = require('./routes/api');
+const authRouter = require('./routes/auth');
+const { ErrorHandler } = require('./controller/error/ErrorHandler');
+const services = require('./routes/services');
+const user = require('./routes/user');
+const sessionRouter = require('./routes/session');
+const { blockJWT, protect } = require('./middleware/auth');
 
 // Set app
 const app = express();
@@ -51,12 +51,14 @@ var accessLogStream = fs.createWriteStream(path.join("./", "access.log"), {
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(apiLimiter);
-// Old Routes
-// app.use('/api', apiRoutes);
+
+// Cookies
+app.use(cookieParser());
 
 // Routes
 app.use("/api", globalRouter);
 app.use("/api/auth", authRateLimiter, authRouter);
+app.use("/api/session", sessionRouter);
 // app.use("/api/services", blockJWT, protect, services);
 app.use("/api/user", blockJWT, protect, user);
 app.use(ErrorHandler);
@@ -67,6 +69,10 @@ app.listen(port, () => {
 });
 
 app.get('/', (req, res) => {
-    const data = { msg: 'Hello from the server!' };
+    const data = { 
+        msg: 'Hello from the server!',
+        cookies:  req.cookies,
+        signedCookies: req.signedCookies,
+    };
     res.json(data);
 });
