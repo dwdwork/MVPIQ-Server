@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "default": "dwdwork-mvpiq"
+  },
+  "targets": {},
+  "etags": {
+    "dwdwork-mvpiq": {
+      "extensionInstances": {}
+    }
+  },
+  "dataconnectEmulatorConfig": {}
+}
