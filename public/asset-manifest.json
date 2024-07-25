@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.js": "/static/js/main.03b25c96.js",
+    "static/js/691.c05c8327.js": "/static/js/691.c05c8327.js",
+    "static/media/MaterialCommunityIcons.ttf": "/static/media/MaterialCommunityIcons.5d42b4e60858731e7b65.ttf",
+    "static/media/MaterialIcons.ttf": "/static/media/MaterialIcons.f20305dee9d396fea5c7.ttf",
+    "static/media/FontAwesome5_Solid.ttf": "/static/media/FontAwesome5_Solid.07c3313b24f7b1ca85ee.ttf",
+    "static/media/FontAwesome.ttf": "/static/media/FontAwesome.1e59d2330b4c6deb84b3.ttf",
+    "static/media/DINAlternateBold.ttf": "/static/media/DINAlternateBold.9c46820ce04c7ad2955b.ttf",
+    "static/media/FontAwesome5_Brands.ttf": "/static/media/FontAwesome5_Brands.9e138496e8f1719c6ebf.ttf",
+    "static/media/FontAwesome5_Regular.ttf": "/static/media/FontAwesome5_Regular.1017bce89c72f95bcf8e.ttf",
+    "static/media/FuturaLT-Bold.ttf": "/static/media/FuturaLT-Bold.c0efd0e7516173c6c1f9.ttf",
+    "static/media/MVPIQ-logo_full.png": "/static/media/MVPIQ-logo_full.4e5a875e247575e6441e.png",
+    "favicon.ico": "/favicon.ico",
+    "static/media/MVPIQ-logo-empty_shield.png": "/static/media/MVPIQ-logo-empty_shield.90fcb5e5db048c87f214.png",
+    "index.html": "/index.html",
+    "static/media/rocket.png": "/static/media/rocket.d2f3bf41d5e4515c39a9.png",
+    "static/media/bell.png": "/static/media/bell.cf04af27d6a651c4b904.png",
+    "static/media/star.png": "/static/media/star.69c7138684828d68fe5a.png",
+    "static/media/heart.png": "/static/media/heart.23b5c2c0eb77d50ff1b4.png",
+    "favicon-32.png": "/favicon-32.png",
+    "favicon-16.png": "/favicon-16.png",
+    "manifest.json": "/manifest.json",
+    "serve.json": "/serve.json",
+    "main.03b25c96.js.map": "/static/js/main.03b25c96.js.map",
+    "691.c05c8327.js.map": "/static/js/691.c05c8327.js.map"
+  },
+  "entrypoints": [
+    "static/js/691.c05c8327.js",
+    "static/js/main.03b25c96.js"
+  ]
+}
